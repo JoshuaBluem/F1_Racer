@@ -45,7 +45,7 @@ public class Duplicator : MonoBehaviour
             copy.name = original.name + " (Copy)";
         }
         Debug.Log($"Playing with +{amount} duplicates");
-        if (true || !Application.isEditor)
+        if (!Application.isEditor)
         {
             string resultsPath = "C:\\Unity\\Uni\\F1_Racer\\results";
             var logFiles = Directory.GetFiles(resultsPath).Where(filePath =>

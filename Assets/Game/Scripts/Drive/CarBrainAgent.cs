@@ -18,8 +18,8 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
     [SerializeField, SelfFill] CarController carController;
     [SerializeField, SelfFill] CarStatistics carStatistics;
 
-    enum ControlMode { Human, Alg }
-    [SerializeField] ControlMode controlMode = ControlMode.Human;
+    public enum ControlMode { Human, Alg }
+    public ControlMode controlMode = ControlMode.Human;
 
     #region Human Control
     //Human
