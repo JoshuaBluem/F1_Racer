@@ -1,0 +1,16 @@
+how to start enviroment (ml-agents training):
+
+go to your project folder
+
+.\venv\Scripts\activate
+
+mlagents-learn C:\Unity\Uni\F1_Racer\results\Test1\configuration.yaml --run-id=Test1
+
+
+how to view statistics (from ml-agents training):
+
+go to your project folder
+
+tensorboard --logdir results --port 6006
+
+Open a browser window and navigate to localhost:6006

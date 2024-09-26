@@ -1,0 +1,18 @@
+License Agreement for "Custom Inspector": *Extension Asset*
+
+Please note: Following text provides only a short summary of Unity's EULA and does not replace it or add to it.
+Any differences to Unitys EULA should be ignored. Unitys EULA is the only legally binding license.
+
+
+1. Use Restrictions (Extension Asset)
+
+ - Use of the "Custom Inspector" asset is permitted only if purchased through the Unity Asset Store.
+ - The asset must be downloaded through the Unity Package Manager.
+ - This asset operates under a "per seat" license model, requiring each individual user working on the project to possess a valid license.
+ - Sharing or distribution of this asset to other developers is prohibited.
+ - You are allowed to include this asset in a game build for distribution purposes, such as sharing the compiled game.
+
+
+2. Additional Information
+
+ - For more details, please refer to the Unity End User License Agreement (https://unity.com/de/legal/as-terms) and Unity FAQ (https://assetstore.unity.com/browse/eula-faq).
