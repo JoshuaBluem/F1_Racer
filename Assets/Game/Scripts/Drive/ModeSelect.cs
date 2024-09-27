@@ -14,6 +14,7 @@ public class ModeSelect : MonoBehaviour
     [SerializeField, ForceFill] GameObject mainCar;
     BehaviorParameters behaviourParams;
     CarBrainAgent brain;
+    [SerializeField, Tooltip("Where the .onnx files are stored")] FolderPath defaultAISavePath = new();
 
     private void Awake()
     {
@@ -44,7 +45,8 @@ public class ModeSelect : MonoBehaviour
     public void DoAiDrive()
     {
         // Opens the file panel to select an ONNX file
-        string[] filePath = StandaloneFileBrowser.OpenFilePanel("Select an ONNX file", Application.dataPath, "onnx", multiselect: false);
+        string defaultPath = defaultAISavePath.HasPath() ? defaultAISavePath.GetAbsolutePath() : Application.dataPath;
+        string[] filePath = StandaloneFileBrowser.OpenFilePanel("Select an ONNX file", defaultPath, "onnx", multiselect: false);
 
         if (filePath != null && filePath.Length > 0 && !string.IsNullOrEmpty(filePath[0]))
         {
