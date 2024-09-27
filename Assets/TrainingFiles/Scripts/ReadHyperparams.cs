@@ -1,4 +1,3 @@
-using CustomInspector;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,14 +8,14 @@ using UnityEngine;
 * Reads all Folders within a Folder and gets the config files in each. From there it reads all parameters of each file and saves from all files in one big csv file.
 */
 
-class ReadHyperparams : MonoBehaviour
+class ReadHyperparams : WithButtonMethod
 {
+    public override string Description { get; } = "Saves hyperparameters of all training-results in a folder in a csv file";
+
     [SerializeField, Tooltip("Path to folder, where configs are in")] string top_training_paths = "E:\\Wichtig!!\\Uni\\Bachelorarbeit\\Training\\results-sac-100x_new";
     [SerializeField, Tooltip("Path where generated csv should be saved")] string target_csv = "C:\\tmp\\results.txt";
 
-    [Button(nameof(DoRead)), HideField] bool _;
-
-    public void DoRead()
+    public override void ButtonMethod()
     {
         string[] all_training_paths = Directory.GetDirectories(top_training_paths);
         var values = new List<string>();

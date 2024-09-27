@@ -8,31 +8,30 @@ using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
 
-public class CreateConfigs : MonoBehaviour
+public class CreateConfigs : WithButtonMethod
 {
-    [SerializeField, AssetPath] FilePath configurationFile = new();
+    public override string Description { get; } = "Creates n amount of config-files all with random values in a range given by a preset-file";
+
+    [SerializeField, AssetPath] FilePath configurationFilePreset = new();
     [SerializeField, AssetPath] FolderPath configFiles = new();
 
     [SerializeField, Min(3)] int filesAmount = 100;
 
-    [Button(nameof(CreateFiles))]
-    [SerializeField, HideField] bool _;
-
-    public void CreateFiles()
+    public override void ButtonMethod()
     {
         Debug.Log("Creating files ...");
 
         // Read
-        string[] lines = configurationFile.ReadAllLines();
+        string[] lines = configurationFilePreset.ReadAllLines();
 
         // Check Input
-        if (!configurationFile.HasPath())
+        if (!configurationFilePreset.HasPath())
             throw new NullReferenceException("configurationFilePreset must be filled in the inspector");
         if (!configFiles.HasPath())
             throw new NullReferenceException("configFiles must be filled in the inspector");
 
         if (!lines.Any(l => l.Any(c => c == '[')))
-            throw new ArgumentException(nameof(configurationFile) + " does not contain any ranges to choose values from. Expected ranges like \"[0, 1, -]\"");
+            throw new ArgumentException(nameof(configurationFilePreset) + " does not contain any ranges to choose values from. Expected ranges like \"[0, 1, -]\"");
 
         if (configFiles.GetAllFiles().Any())
             throw new ArgumentException($"There are already files present in {configFiles.GetPath()}.\nPlease delete them first!"); //i do not want to delete it from code, because deleted files cannot be restored!
@@ -47,7 +46,7 @@ public class CreateConfigs : MonoBehaviour
 
 
         // Create new
-        string trainerMethodName = configurationFile.Name[..3];
+        string trainerMethodName = configurationFilePreset.Name[..3];
         List<ParameterLine> content = lines.Select(l => new ParameterLine(l)).ToList();
 
         Stopwatch sw = Stopwatch.StartNew();
