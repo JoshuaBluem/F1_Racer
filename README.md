@@ -22,6 +22,6 @@ Since building the project makes training faster, i recommend building the scene
 If mlagents is correctly installed and setup, an example training command in the console could be: "mlagents-learn C:\<your path>\YourConfigFile.yaml --env=C:\<your path>\F1_Racer.exe --no-graphics"
 Within the result you will find the trained ai as .onnx file
 
------------**Training AI:**------------
+-----------**Code Insight:**-----------
 
-For understanding you can get a rough insight by looking at the simplefied UML-diagram at ![Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
+For understanding the structure of driving you can get a rough insight by looking at following simplefied UML-diagram ![Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
