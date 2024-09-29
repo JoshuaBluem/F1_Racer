@@ -21,6 +21,7 @@ Training will start automatically when "mlagents-learn" is called (in the activa
 Since building the project makes training faster, i recommend building the scene. But still you can also train in the Unity-Editor.
 If ml-agents is correctly installed and setup, an example training command in the console could be: "mlagents-learn C:\<your path>\YourConfigFile.yaml --env=C:\<your path>\Builds\F1_Racer.exe --no-graphics"
 <br/>Within the result you will find the trained ai as .onnx file
+<br/>To get started with ml-agents you can look this start-tutorial on ![youtube](https://www.youtube.com/watch?v=RANRz9oyzko)
 
 -----------**Code Insight:**-----------
 
