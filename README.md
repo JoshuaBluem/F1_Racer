@@ -24,4 +24,4 @@ Within the result you will find the trained ai as .onnx file
 
 -----------**Code Insight:**-----------
 
-For understanding the structure of driving you can get a rough insight by looking at following simplefied UML-diagram ![Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
+For understanding the structure of the code around the driving you can get a rough insight by looking at following simplefied UML-diagram ![Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
