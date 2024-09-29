@@ -17,8 +17,8 @@ The project supports 3 playstyles within the game.
 
 -----------**Training AI:**------------
 
-Training will start automatically when mlagents-learn is called and "GameScene"-Scene is running.
-Since building the project makes training faster, i recommend building the scene in a "Builds" folder. But still you can also train in the unity editor.
+Training will start automatically when "mlagents-learn" is called (in the activated console-enviroment) and the "GameScene"-Scene is running.
+Since building the project makes training faster, i recommend building the scene in a "Builds" folder. But still you can also train in the Unity-Editor.
 If mlagents is correctly installed and setup, an example training command in the console could be: "mlagents-learn C:\<your path>\YourConfigFile.yaml --env=C:\<your path>\F1_Racer.exe --no-graphics"
 Within the result you will find the trained ai as .onnx file
 
