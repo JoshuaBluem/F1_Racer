@@ -3,7 +3,7 @@
 
 This Unity bachelor project focuses on "Formula 1 Racing," utilizing ML-Agents for reinforcement learning to compare OpenAI's trainers: Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC).
 
----------**Starting the Project:**----------
+--------**Starting the Project:**---------
 
 To access the project, clone it to your local machine and add the project path in Unity Hub. To initiate the game, navigate to Assets/Game/Scenes/GameScene and press play in the Unity Editor.
 
