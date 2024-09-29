@@ -24,5 +24,4 @@ Within the result you will find the trained ai as .onnx file
 
 -----------**Training AI:**------------
 
-For understanding you can get a rough insight by looking at the simplefied UML-diagram at Assets/Game/Docs
-![alt text](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.png)
+For understanding you can get a rough insight by looking at the simplefied UML-diagram at ![alt text](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.png)Assets/Game/Docs
