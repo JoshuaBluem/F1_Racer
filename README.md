@@ -1,28 +1,25 @@
 # F1_Racer
------------**Description:**-----------
+-------------**Description:**--------------
 
-Unity bachelor project of 'formula 1 racing' with ml-agents (reinforcement learning) for comparing open-ai's trainers ppo and sac
+This Unity bachelor project focuses on "Formula 1 Racing," utilizing ML-Agents for reinforcement learning to compare OpenAI's trainers: Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC).
 
-----------**Start Project:**-----------
+---------**Starting the Project:**----------
 
-This project is made for the unity editor. To open it, clone it to local and then add the project path in the unity hub.
-To start the actual game, head to Assets/Game/Scenes/GameScene and press play in the unity editor.
+To access the project, clone it to your local machine and add the project path in Unity Hub. To initiate the game, navigate to Assets/Game/Scenes/GameScene and press play in the Unity Editor.
 
------------**Play Modes:**------------
+------------**Gameplay Modes:**-------------
 
-The project supports 3 playstyles within the game.
- - First ("Play Game") is playing yourself with MnK.
- - The Second option ("Watch Algortihm") uses some programmed algorithm.
- - With the third option ("Load AI ...") you can select a Neural-Network (.onnx file) to let an ai play the game.
+The project supports 3 gameplay modes:
+ - Play Game: Engage in gameplay using mouse and keyboard controls.
+ - Watch Algorithm: Observe a programmed algorithm in action.
+ - Load AI: Select a Neural Network (.onnx file) to allow AI to play the game.
 
------------**Training AI:**------------
+-------------**Training AI:**--------------
 
-Training will start automatically when "mlagents-learn" is called (in the activated console-enviroment) and the "GameScene"-Scene is running.
-Since building the project makes training faster, i recommend building the scene. But still you can also train in the Unity-Editor.
-If ml-agents is correctly installed and setup, an example training command in the console could be: "mlagents-learn C:\<your path>\YourConfigFile.yaml --env=C:\<your path>\Builds\F1_Racer.exe --no-graphics"
-<br/>Within the result you will find the trained ai as .onnx file
-<br/>To get started with ml-agents you can look this start-tutorial on [youtube](https://www.youtube.com/watch?v=RANRz9oyzko)
+AI training begins automatically when the mlagents-learn command is executed in the activated console environment while the "GameScene" is running. Building the project is recommended for faster training, though training can also be conducted within the Unity Editor. If ML-Agents is correctly installed and configured, an example command in the console would be:
+<br/>mlagents-learn C:<your_path>\YourConfigFile.yaml --env=C:<your_path>\Builds\F1_Racer.exe --no-graphics
+<br/>The trained AI will be saved as an .onnx file. For additional guidance on ML-Agents, refer to introductory tutorials available on [YouTube](https://www.youtube.com/watch?v=RANRz9oyzko)
 
------------**Code Insight:**-----------
+-------------**Code Insight:**-------------
 
-For understanding the structure of the code around the driving you can get a rough insight by looking at following simplefied UML-diagram [Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
+To gain a better understanding of the code structure related to driving mechanics, please consult the simplified UML diagram located in [Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
