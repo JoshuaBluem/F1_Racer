@@ -7,14 +7,14 @@ This Unity bachelor project focuses on "Formula 1 Racing," utilizing ML-Agents f
 
 To access the project, clone it to your local machine and add the project path in Unity Hub. To initiate the game, navigate to Assets/Game/Scenes/GameScene and press play in the Unity Editor.
 
------------**Gameplay Modes:**------------
+----------**Gameplay Modes:**-----------
 
 The project supports 3 gameplay modes:
  - Play Game: Engage in gameplay using mouse and keyboard controls.
  - Watch Algorithm: Observe a programmed algorithm in action.
  - Load AI: Select a Neural Network (.onnx file) to allow AI to play the game.
 
--------------**Training AI:**--------------
+--------------**Training AI:**--------------
 
 AI training begins automatically when the mlagents-learn command is executed in the activated console environment while the "GameScene" is running. Building the project is recommended for faster training, though training can also be conducted within the Unity Editor. If ML-Agents is correctly installed and configured, an example command in the console would be:
 <br/>mlagents-learn C:<your_path>\YourConfigFile.yaml --env=C:<your_path>\Builds\F1_Racer.exe --no-graphics
