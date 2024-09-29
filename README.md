@@ -5,7 +5,7 @@ This Unity bachelor project focuses on Formula 1 Racing, utilizing ML-Agents for
 
 ---------**Starting the Project:**----------
 
-To access the project, clone it to your local machine and add the project path in Unity Hub. To initiate the game, navigate to Assets/Game/Scenes/GameScene and press play in the Unity Editor.
+To access the project, clone it to your local machine and add the project path in Unity Hub. To initiate the game, navigate to Assets/Game/Scenes/GameScene.unity and press play in the Unity Editor.
 
 ----------**Gameplay Modes:**-----------
 
