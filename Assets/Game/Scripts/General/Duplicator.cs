@@ -43,6 +43,8 @@ public class Duplicator : MonoBehaviour
         {
             var copy = Instantiate(original, original.transform.position, original.transform.rotation, this.transform);
             copy.name = original.name + " (Copy)";
+            Debug.Assert(copy.transform.position == original.transform.position, "Copy was instantiated on wrong position");
+            // Debug.Log($"position set: {copy.transform.position}");
         }
         Debug.Log($"Playing with +{amount} duplicates");
         if (!Application.isEditor)

@@ -301,7 +301,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 150011692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.436983, y: 13.151511, z: -351.608}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -16653,7 +16653,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6583540924883901571}
-  uiUpdater: {fileID: 6583540924883901573}
   carStatistics: {fileID: 6583540924883901574}
   chassis: {fileID: 520479885}
   centerOfMass: {x: 0, y: 0, z: 0}

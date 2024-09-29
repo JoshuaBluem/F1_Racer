@@ -31,8 +31,8 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
 
     public static List<CarController> allCars = new();
 
-    Vector3 startPosition = Vector3.zero;
-    Quaternion startRotation = Quaternion.identity;
+    Vector3 spawnPosition = Vector3.zero;
+    Quaternion spawnRotation = Quaternion.identity;
 
     public List<ICarEvents> carEventsObs = new();
 
@@ -88,6 +88,8 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
     #region start end input
     public void RequestStartRun()
     {
+        // Debug.Log("RequestStartRun()");
+
         //disable wheel physics and drift-trails
         foreach (var wheel in chassis.AllWheels())
         {
@@ -95,7 +97,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
         }
 
         //reset car
-        this.transform.SetPositionAndRotation(startPosition, startRotation);
+        this.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
@@ -123,6 +125,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
     #region unity events
     private void OnCollisionStay(Collision collision)
     {
+        Debug.Log("OnCollisionStay");
         if (collision.collider.CompareTag("Floor")) //if touched grass or flipped around
         {
             timeStuck += Time.deltaTime;
@@ -135,12 +138,15 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
         if (collision.collider.CompareTag("Floor"))
             timeStuck = 0;
     }
+    private void Awake()
+    {
+        spawnPosition = this.transform.position;
+        spawnRotation = this.transform.rotation;
+    }
     private void Start()
     {
         allCars.Add(this);
         TrackGenerator.Instance.trackObserver.Add(this);
-        startPosition = this.transform.position;
-        startRotation = this.transform.rotation;
 
         carEventsObs.Add(carStatistics);
         ApplyCenterOfMass();
