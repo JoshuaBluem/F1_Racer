@@ -25,4 +25,4 @@ If ml-agents is correctly installed and setup, an example training command in th
 
 -----------**Code Insight:**-----------
 
-For understanding the structure of the code around the driving you can get a rough insight by looking at following simplefied UML-diagram ![Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
+For understanding the structure of the code around the driving you can get a rough insight by looking at following simplefied UML-diagram [Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
