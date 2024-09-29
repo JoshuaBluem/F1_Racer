@@ -22,4 +22,4 @@ AI training begins automatically when the mlagents-learn command is executed in 
 
 -------------**Code Insight:**-------------
 
-To gain a better understanding of the code structure related to driving mechanics, please consult the simplified UML diagram located in [Assets/Game/Docs](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
+To gain a better understanding of the code structure related to driving mechanics, please consult the simplified UML diagram located in [Assets/Game/Docs/CarDrive_UML.drawio.pdf](https://github.com/JoshuaBluem/F1_Racer/tree/main/Assets/Game/Docs/CarDrive_UML.drawio.pdf)
