@@ -1,7 +1,7 @@
 # F1_Racer
 -------------**Description:**--------------
 
-This Unity bachelor project focuses on "Formula 1 Racing," utilizing ML-Agents for reinforcement learning to compare OpenAI's trainers: Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC).
+This Unity bachelor project focuses on Formula 1 Racing, utilizing ML-Agents for reinforcement learning to compare OpenAI's trainers: Proximal Policy Optimization (PPO) and Soft Actor-Critic (SAC).
 
 ---------**Starting the Project:**----------
 
