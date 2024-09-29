@@ -10,8 +10,8 @@ using UnityEngine;
 public class CarStatistics : MonoBehaviour, CarController.ICarEvents
 {
     [SerializeField, SelfFill] Rigidbody rb;
-    [SerializeField, SelfFill] CarController carController;
     [SerializeField, SelfFill] CarUIUpdater uiUpdater;
+    [SerializeField, ForceFill] Chassis chassis;
 
     public TrackPart CurrentTrackPart => currentTrackPart;
     [SerializeField, ReadOnly] TrackPart currentTrackPart;
@@ -102,7 +102,7 @@ public class CarStatistics : MonoBehaviour, CarController.ICarEvents
     public float GetSideSlip()
     {
         float sum = 0;
-        foreach (WheelHandler wheel in carController.AllWheels())
+        foreach (WheelHandler wheel in chassis.AllWheels())
         {
             WheelHit wheelHit = wheel.LastGroundHit;
             sum += Mathf.Abs(wheelHit.sidewaysSlip);
@@ -119,14 +119,6 @@ public class CarStatistics : MonoBehaviour, CarController.ICarEvents
     }
 
     #region unity events
-    private void Awake()
-    {
-        carController.carEventsObs.Add(this);
-    }
-    private void OnDestroy()
-    {
-        carController.carEventsObs.Remove(this);
-    }
     private void FixedUpdate()
     {
         //Speed
@@ -171,7 +163,8 @@ public class CarStatistics : MonoBehaviour, CarController.ICarEvents
             IEnumerator W()
             {
                 yield return new WaitForSeconds(3);
-                carController.RequestEndRun();
+                foreach (var obs in completionObservers)
+                    obs.OnEndReached();
             }
         }
     }
@@ -211,7 +204,7 @@ public class CarStatistics : MonoBehaviour, CarController.ICarEvents
         uiUpdater.DisplayTime(CurrentSeconds);
 
         //wait until starts to drive
-        while (carController.CurrentAcceleration <= 0)
+        while (Mathf.Abs(rb.velocity.x) + Mathf.Abs(rb.velocity.z) <= 0.01)
         {
             yield return null;
         }

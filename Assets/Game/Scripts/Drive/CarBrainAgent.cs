@@ -14,7 +14,7 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICompletionObserver
 {
-    [SerializeField, SelfFill] BehaviorParameters behaviorParameters;
+    [SelfFill] public BehaviorParameters behaviorParameters;
     [SerializeField, SelfFill] CarController carController;
     [SerializeField, SelfFill] CarStatistics carStatistics;
 
@@ -29,10 +29,11 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
     [SerializeField, ForceFill] InputActionReference steeringInput;
 
     [ShowIfIs(nameof(controlMode), ControlMode.Human)]
-    [Tooltip("How fast the max maxSteeringAngle is reached.")]
+    [Tooltip("How sensitive the gamepad/controller is for small movements.\n1: 50% movement on gamepad means 50% wheel turn\nInfinity: Small gamepad movements count almost nothing. (Amlost like a high controller dead-zone)")]
     [SerializeField, Range(1, 6)] float steeringSmoothness = 3;
 
     [ShowIfIs(nameof(controlMode), ControlMode.Human)]
+    [Tooltip("How fast the max maxSteeringAngle is reached.")]
     [SerializeField, Min(.2f), Unit("/sec")]
     float steerSpeed = 5;
 
@@ -56,9 +57,9 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
     }
     private void FixedUpdate()
     {
+        episodeDuration += Time.deltaTime;
         if (!behaviorParameters.IsInHeuristicMode()) // if not human controls the car (but ai)
         {
-            episodeDuration += Time.deltaTime;
             if (episodeDuration >= maxEpisodeDuration) //1 minute
             {
                 EndEpisode();
@@ -68,18 +69,20 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
     #region ml-agents
     public new void EndEpisode()
     {
+        // Debug.Log("EndEpisode");
         if (carStatistics.CurrentCompletion < 1) //if whole track not completed yet
         {
             //aktuelle Strecke noch geben
             AddReward(carStatistics.GetTrackPartPercent() * 10);
         }
-        else
+        else // track was completed
         {
-            //zusätzliche belohnung, falls im Ziel
+            //zusätzliche belohnung, falls im Ziel noch zeit
             if (maxEpisodeDuration > episodeDuration)
             {
                 float usedTime_percent = episodeDuration / maxEpisodeDuration;
                 float oneTrackReward = 10 * TrackGenerator.TracksGenerated;
+                Debug.Assert(usedTime_percent > 0, "No time captured when reaching end");
                 AddReward(((1 / usedTime_percent) - 1) * oneTrackReward); //he gets the same reward for whole track again, if he drives in half time
             }
         }
@@ -100,9 +103,9 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
     }
     public override void OnEpisodeBegin()
     {
+        // Debug.Log("OnEpisodeBegin");
         episodeDuration = 0;
         carController.RequestStartRun();
-        // Debug.Log("OnEpisodeBegin");
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
@@ -132,21 +135,31 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
             acceleration = (accelerationInput.action.ReadValue<float>());
 
             //steering
-            float hInput = steeringInput.action.ReadValue<float>() * 0.75f;
+            float hInput = steeringInput.action.ReadValue<float>();
             //weight small adjustments more
             hInput = Mathf.Sign(hInput) * Mathf.Pow(Mathf.Abs(hInput), steeringSmoothness);
-            //smooth out movements
-            if (hInput > humanSteering)
+
+            if (hInput == 0)
             {
-                humanSteering += steerSpeed * Time.deltaTime;
-                humanSteering = Mathf.Min(humanSteering, hInput);
+                //reset of steering to straigth should always happen immediate
+                humanSteering = hInput;
             }
-            else if (hInput < humanSteering)
+            else
             {
-                humanSteering -= steerSpeed * Time.deltaTime;
-                humanSteering = Mathf.Max(humanSteering, hInput);
+                //smooth out movements to right and left
+                if (hInput > humanSteering)
+                {
+                    humanSteering += steerSpeed * Time.deltaTime;
+                    humanSteering = Mathf.Min(humanSteering, hInput);
+                }
+                else if (hInput < humanSteering)
+                {
+                    humanSteering -= steerSpeed * Time.deltaTime;
+                    humanSteering = Mathf.Max(humanSteering, hInput);
+                }
             }
-            steering = (humanSteering);
+
+            steering = humanSteering;
         }
         else if (controlMode == ControlMode.Alg)
         {

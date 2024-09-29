@@ -11,20 +11,15 @@ public class ModeSelect : MonoBehaviour
 {
     [SerializeField, SelfFill] Canvas modeSelectCanvas;
     [SerializeField, ForceFill] Duplicator carDuplicator;
-    [SerializeField, ForceFill] GameObject mainCar;
-    BehaviorParameters behaviourParams;
-    CarBrainAgent brain;
+    [SerializeField, ForceFill] CarBrainAgent mainCarBrain;
+    BehaviorParameters BehaviourParams => mainCarBrain.behaviorParameters;
     [SerializeField, Tooltip("Where the .onnx files are stored")] FolderPath defaultAISavePath = new();
 
-    private void Awake()
-    {
-        behaviourParams = mainCar.GetComponent<BehaviorParameters>();
-        brain = mainCar.GetComponent<CarBrainAgent>();
-    }
+
     private void Start()
     {
-        behaviourParams.Model = null;
-        if (!behaviourParams.IsInHeuristicMode()) // if is in training
+        BehaviourParams.Model = null;
+        if (!BehaviourParams.IsInHeuristicMode()) // if is in training
         {
             carDuplicator.gameObject.SetActive(true);
             modeSelectCanvas.gameObject.SetActive(false);
@@ -32,14 +27,14 @@ public class ModeSelect : MonoBehaviour
     }
     public void DoHumanDrive()
     {
-        behaviourParams.Model = null;
-        brain.controlMode = CarBrainAgent.ControlMode.Human;
+        BehaviourParams.Model = null;
+        mainCarBrain.controlMode = CarBrainAgent.ControlMode.Human;
         modeSelectCanvas.gameObject.SetActive(false);
     }
     public void DoAlgDrive()
     {
-        behaviourParams.Model = null;
-        brain.controlMode = CarBrainAgent.ControlMode.Alg;
+        BehaviourParams.Model = null;
+        mainCarBrain.controlMode = CarBrainAgent.ControlMode.Alg;
         modeSelectCanvas.gameObject.SetActive(false);
     }
     public void DoAiDrive()
@@ -79,7 +74,7 @@ public class ModeSelect : MonoBehaviour
                 asset.hideFlags = HideFlags.DontSave;
 
                 // assign policy
-                behaviourParams.Model = asset;
+                BehaviourParams.Model = asset;
             }
 
             // Debug.Log("Selected onnx file: " + filePath[0]);

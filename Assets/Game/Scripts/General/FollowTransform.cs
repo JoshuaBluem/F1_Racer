@@ -3,6 +3,7 @@ using UnityEngine;
 
 /// <summary>
 /// Makes this.transform follow any other transform
+/// e.g. used for grass bundles
 /// </summary>
 public class FollowTransform : MonoBehaviour
 {

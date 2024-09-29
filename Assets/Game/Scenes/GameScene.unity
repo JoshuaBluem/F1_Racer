@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modeSelectCanvas: {fileID: 48055197}
   carDuplicator: {fileID: 150011693}
-  mainCar: {fileID: 6583540924883901570}
+  mainCarBrain: {fileID: 6583540924883901578}
   defaultAISavePath:
     path: Assets/TrainingFiles/NNs
     assetReference: {fileID: 102900000, guid: 567e6325d6b17e64d8886bf55b20d358, type: 3}
@@ -7407,6 +7407,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 512349660}
   m_CullTransparentMesh: 1
+--- !u!1 &520479883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 520479884}
+  - component: {fileID: 520479885}
+  m_Layer: 7
+  m_Name: Chassis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &520479884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520479883}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6080675662482405014}
+  - {fileID: 5050254917639724582}
+  - {fileID: 2708853607932841135}
+  - {fileID: 5230177227014333082}
+  m_Father: {fileID: 5771010235150091832}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &520479885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 520479883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae85cc706f8cc94bb15730687d09407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheel_frontLeft: {fileID: 6779006090592974461}
+  wheel_frontRight: {fileID: 8594252855888234665}
+  wheel_rearLeft: {fileID: 8082266454862268219}
+  wheel_rearRight: {fileID: 8336024194808920525}
 --- !u!1 &559056027
 GameObject:
   m_ObjectHideFlags: 0
@@ -14900,7 +14952,7 @@ RectTransform:
   - {fileID: 201567128}
   - {fileID: 1032280731}
   m_Father: {fileID: 5771010235150091832}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -16244,7 +16296,7 @@ GameObject:
   - component: {fileID: 8694776455744322398}
   - component: {fileID: 8926638589488101029}
   m_Layer: 7
-  m_Name: Chassis
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16339,13 +16391,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8082266454862268217}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.853007, y: 0.3687062, z: -1.8327072}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.853007, y: 0.36870623, z: -1.8327026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5771010235150091832}
-  m_RootOrder: 3
+  m_Father: {fileID: 520479884}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3264240382907101342
 MeshFilter:
@@ -16424,13 +16476,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2196533712430458503}
-  m_LocalRotation: {x: 1, y: 0, z: -0, w: -0.00000004371139}
-  m_LocalPosition: {x: 0.8533211, y: 0.3687062, z: 2.143293}
+  m_LocalRotation: {x: 1, y: -0, z: -0, w: -0.00000004371139}
+  m_LocalPosition: {x: 0.8533211, y: 0.36870623, z: 2.14328}
   m_LocalScale: {x: -1, y: -1, z: -1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5771010235150091832}
-  m_RootOrder: 2
+  m_Father: {fileID: 520479884}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &5230177227014333082
 Transform:
@@ -16439,13 +16491,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3841217233874466056}
-  m_LocalRotation: {x: 1, y: 0, z: -0, w: -0.00000004371139}
-  m_LocalPosition: {x: 0.85332114, y: 0.3687062, z: -1.8327072}
+  m_LocalRotation: {x: 1, y: -0, z: -0, w: -0.00000004371139}
+  m_LocalPosition: {x: 0.85332114, y: 0.36870623, z: -1.8327026}
   m_LocalScale: {x: -1, y: -1, z: -1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5771010235150091832}
-  m_RootOrder: 4
+  m_Father: {fileID: 520479884}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5572787457029606662
 MeshFilter:
@@ -16510,10 +16562,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7800312738996946973}
-  - {fileID: 6080675662482405014}
-  - {fileID: 5050254917639724582}
-  - {fileID: 2708853607932841135}
-  - {fileID: 5230177227014333082}
+  - {fileID: 520479884}
   - {fileID: 1716253372}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -16540,13 +16589,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719471591937279009}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.853007, y: 0.3687062, z: 2.1432931}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.853007, y: 0.36870623, z: 2.14328}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5771010235150091832}
-  m_RootOrder: 1
+  m_Father: {fileID: 520479884}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6583540924883901570
 GameObject:
@@ -16605,11 +16654,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 6583540924883901571}
   uiUpdater: {fileID: 6583540924883901573}
-  carStatistik: {fileID: 6583540924883901574}
-  wheel_frontLeft: {fileID: 6779006090592974461}
-  wheel_frontRight: {fileID: 8594252855888234665}
-  wheel_rearLeft: {fileID: 8082266454862268219}
-  wheel_rearRight: {fileID: 8336024194808920525}
+  carStatistics: {fileID: 6583540924883901574}
+  chassis: {fileID: 520479885}
   centerOfMass: {x: 0, y: 0, z: 0}
   acceleration: 2000
   brake: 4000
@@ -16644,8 +16690,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 6583540924883901571}
-  carController: {fileID: 6583540924883901572}
   uiUpdater: {fileID: 6583540924883901573}
+  chassis: {fileID: 520479885}
   currentTrackPart: {fileID: 0}
 --- !u!114 &6583540924883901575
 MonoBehaviour:
@@ -16890,7 +16936,7 @@ MonoBehaviour:
   steeringInput: {fileID: -3114685282905530649, guid: a9b54e2075db996469bcf1993cdf3aa8,
     type: 3}
   steeringSmoothness: 4
-  steerSpeed: 20
+  steerSpeed: 10
   maxEpisodeDuration: 60
 --- !u!114 &6583540924883901579
 MonoBehaviour:

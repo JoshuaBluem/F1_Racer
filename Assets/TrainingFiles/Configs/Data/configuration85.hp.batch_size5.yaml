@@ -3,10 +3,10 @@ behaviors:
   DrivingCarBehavior:
     trainer_type: sac
     hyperparameters:
-      learning_rate: 0.00045
+      learning_rate: 0.00023
       learning_rate_schedule: constant
-      batch_size: 922
-      buffer_size: 130924
+      batch_size: 526
+      buffer_size: 131400
       buffer_init_steps: 9428
       tau: 0.008808395
       steps_per_update: 20.0
@@ -62,7 +62,7 @@ engine_settings:
   no_graphics: true
 environment_parameters: null
 checkpoint_settings:
-  run_id: configuration85_learning5
+  run_id: configuration85_batch_size5
   initialize_from: null
   load_model: false
   resume: false

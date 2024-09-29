@@ -10,13 +10,9 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
     #region serialized
     [Title("References")]
     [SerializeField, SelfFill] Rigidbody rb;
-    [SerializeField, SelfFill] CarUIUpdater uiUpdater;
-    [SerializeField, SelfFill] CarStatistics carStatistik;
+    [SerializeField, SelfFill] CarStatistics carStatistics;
+    [SerializeField, ForceFill] Chassis chassis;
 
-    [SerializeField, ForceFill] WheelHandler wheel_frontLeft;
-    [SerializeField, ForceFill] WheelHandler wheel_frontRight;
-    [SerializeField, ForceFill] WheelHandler wheel_rearLeft;
-    [SerializeField, ForceFill] WheelHandler wheel_rearRight;
 
     [Title("Physics")]
     [Hook(nameof(ApplyCenterOfMass))]
@@ -55,7 +51,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
         float motorTorque = 0;
         float brakeTorque = 0;
 
-        if (carStatistik.CurrentCompletion >= 1) //brake after reached finish line
+        if (carStatistics.CurrentCompletion >= 1) //brake after reached finish line
             vInput = -1;
 
         if (vInput > 0)
@@ -67,13 +63,13 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
             brakeTorque = brake * -vInput;
         }
 
-        wheel_rearRight.WheelCollider.motorTorque = motorTorque;
-        wheel_rearLeft.WheelCollider.motorTorque = motorTorque;
+        chassis.wheel_rearRight.WheelCollider.motorTorque = motorTorque;
+        chassis.wheel_rearLeft.WheelCollider.motorTorque = motorTorque;
 
-        wheel_frontRight.WheelCollider.brakeTorque = brakeTorque;
-        wheel_frontLeft.WheelCollider.brakeTorque = brakeTorque;
-        wheel_rearRight.WheelCollider.brakeTorque = brakeTorque;
-        wheel_rearLeft.WheelCollider.brakeTorque = brakeTorque;
+        chassis.wheel_frontRight.WheelCollider.brakeTorque = brakeTorque;
+        chassis.wheel_frontLeft.WheelCollider.brakeTorque = brakeTorque;
+        chassis.wheel_rearRight.WheelCollider.brakeTorque = brakeTorque;
+        chassis.wheel_rearLeft.WheelCollider.brakeTorque = brakeTorque;
 
     }
     /// <summary>
@@ -84,8 +80,8 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
         Debug.Assert(hInput >= -1 && hInput <= 1, "Steering expected to be in range [-1, 1]");
 
         currentSteering = hInput;
-        wheel_frontLeft.WheelCollider.steerAngle = maxSteeringAngle * currentSteering;
-        wheel_frontRight.WheelCollider.steerAngle = maxSteeringAngle * currentSteering;
+        chassis.wheel_frontLeft.WheelCollider.steerAngle = maxSteeringAngle * currentSteering;
+        chassis.wheel_frontRight.WheelCollider.steerAngle = maxSteeringAngle * currentSteering;
     }
     #endregion
 
@@ -93,7 +89,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
     public void RequestStartRun()
     {
         //disable wheel physics and drift-trails
-        foreach (var wheel in AllWheels())
+        foreach (var wheel in chassis.AllWheels())
         {
             wheel.gameObject.SetActive(false);
         }
@@ -104,7 +100,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
         rb.angularVelocity = Vector3.zero;
 
         //activate wheel physics and drift-trails
-        foreach (var wheel in AllWheels())
+        foreach (var wheel in chassis.AllWheels())
         {
             wheel.gameObject.SetActive(true);
             wheel.Trail.Clear();
@@ -146,6 +142,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
         startPosition = this.transform.position;
         startRotation = this.transform.rotation;
 
+        carEventsObs.Add(carStatistics);
         ApplyCenterOfMass();
     }
     private void OnDestroy()
@@ -177,12 +174,5 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
 
     #region helpers
     void ApplyCenterOfMass() => rb.centerOfMass = centerOfMass;
-    public IEnumerable<WheelHandler> AllWheels()
-    {
-        yield return wheel_frontLeft;
-        yield return wheel_frontRight;
-        yield return wheel_rearLeft;
-        yield return wheel_rearRight;
-    }
     #endregion
 }
