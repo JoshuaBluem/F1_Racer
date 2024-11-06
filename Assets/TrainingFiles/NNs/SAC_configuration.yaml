@@ -3,19 +3,19 @@ behaviors:
   DrivingCarBehavior:
     trainer_type: sac
     hyperparameters:
-      learning_rate: 0.0002017601
+      learning_rate: 0.0002484561
       learning_rate_schedule: constant
-      batch_size: 922
-      buffer_size: 130924
-      buffer_init_steps: 9428
-      tau: 0.008808395
+      batch_size: 678
+      buffer_size: 330186
+      buffer_init_steps: 9426
+      tau: 0.005094994
       steps_per_update: 20.0
       save_replay_buffer: false
-      init_entcoef: 0.6096951
+      init_entcoef: 0.8385753
       reward_signal_steps_per_update: 1.0
     network_settings:
       normalize: true
-      hidden_units: 270
+      hidden_units: 498
       num_layers: 3
       vis_encode_type: simple
       memory: null
@@ -23,11 +23,11 @@ behaviors:
       deterministic: false
     reward_signals:
       extrinsic:
-        gamma: 0.9853241
+        gamma: 0.9939735
         strength: 1.0
         network_settings:
           normalize: false
-          hidden_units: 402
+          hidden_units: 258
           num_layers: 3
           vis_encode_type: simple
           memory: null
@@ -62,7 +62,7 @@ engine_settings:
   no_graphics: true
 environment_parameters: null
 checkpoint_settings:
-  run_id: SAC_RandomSearch
+  run_id: SAC_Config54
   initialize_from: null
   load_model: false
   resume: true
