@@ -747,8 +747,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target_Folder: C:\Unity\Uni\F1_Racer\results
-  parameterName: max_steps
-  targetValue: 22000000
+  parameterName: checkpoint_interval
+  targetValue: 50000
 --- !u!4 &2111109645
 Transform:
   m_ObjectHideFlags: 0

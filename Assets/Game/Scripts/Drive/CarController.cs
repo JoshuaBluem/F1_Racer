@@ -125,7 +125,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
     #region unity events
     private void OnCollisionStay(Collision collision)
     {
-        Debug.Log("OnCollisionStay");
+        // Debug.Log("OnCollisionStay");
         if (collision.collider.CompareTag("Floor")) //if touched grass or flipped around
         {
             timeStuck += Time.deltaTime;

@@ -40,7 +40,11 @@ public class ModeSelect : MonoBehaviour
     public void DoAiDrive()
     {
         // Opens the file panel to select an ONNX file
+#if UNITY_EDITOR
         string defaultPath = defaultAISavePath.HasPath() ? defaultAISavePath.GetAbsolutePath() : Application.dataPath;
+#else
+        string defaultPath = Application.dataPath;
+#endif
         string[] filePath = StandaloneFileBrowser.OpenFilePanel("Select an ONNX file", defaultPath, "onnx", multiselect: false);
 
         if (filePath != null && filePath.Length > 0 && !string.IsNullOrEmpty(filePath[0]))

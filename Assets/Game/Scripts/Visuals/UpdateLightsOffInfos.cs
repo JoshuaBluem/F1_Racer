@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 public class UpdateLightsOffInfos : MonoBehaviour, CarStatistics.ICompletionObserver, ToggleLightMode.LightsObserver
 {
-    [SerializeField, Hook(nameof(SpectatedCarChanged), ExecutionTarget.IsPlaying)]
-    CarStatistics spectatedCar = null;
+    // [SerializeField, Hook(nameof(SpectatedCarChanged), ExecutionTarget.IsPlaying)]
+    CarStatistics SpectatedCar => CarBrainAgent.FirstCar.carStatistics;
 
     [SerializeField, Layer] int lightsOffLayer;
 
@@ -26,7 +26,7 @@ public class UpdateLightsOffInfos : MonoBehaviour, CarStatistics.ICompletionObse
         set
         {
             if (!value)
-                this.gameObject.SetActive(spectatedCar != null);
+                this.gameObject.SetActive(SpectatedCar != null);
             else
                 this.gameObject.SetActive(false);
             lightsOn = value;
@@ -36,7 +36,10 @@ public class UpdateLightsOffInfos : MonoBehaviour, CarStatistics.ICompletionObse
     private void Awake()
     {
         ToggleLightMode.lightsObservers.Add(this);
-        SpectatedCarChanged(null, spectatedCar);
+    }
+    void Start()
+    {
+        SpectatedCarChanged(null, SpectatedCar);
     }
     private void OnDestroy()
     {
@@ -57,7 +60,7 @@ public class UpdateLightsOffInfos : MonoBehaviour, CarStatistics.ICompletionObse
         /*        if ((Camera.main.cullingMask & (1 << lightsOffLayer)) != 0) //if cameraMain is rendering the lightsOffLayer
                 {*/
         //Show Car-specific infos
-        if (spectatedCar.CurrentCompletion >= 1)
+        if (SpectatedCar.CurrentCompletion >= 1)
         {
             lanePosition.text = "FINISH LINE REACHED!";
             onLaneRotation.text = "FINISH LINE REACHED!";
@@ -66,13 +69,13 @@ public class UpdateLightsOffInfos : MonoBehaviour, CarStatistics.ICompletionObse
         }
 
         //completion, position and rotation on lane
-        TrackPart tp = spectatedCar.CurrentTrackPart;
+        TrackPart tp = SpectatedCar.CurrentTrackPart;
         if (tp != null)
         {
-            completion.text = $"Current TrackPart: {spectatedCar.GetTrackPartPercent():0.00} / 1";
+            completion.text = $"Current TrackPart: {SpectatedCar.GetTrackPartPercent():0.00} / 1";
 
-            lanePosition.text = $"LanePosition X: {spectatedCar.GetLaneXPos():0.00}";
-            onLaneRotation.text = $"OnLaneRotation: {spectatedCar.GetOnLaneRotation():00.0}°";
+            lanePosition.text = $"LanePosition X: {SpectatedCar.GetLaneXPos():0.00}";
+            onLaneRotation.text = $"OnLaneRotation: {SpectatedCar.GetOnLaneRotation():00.0}°";
         }
         else
         {
@@ -84,12 +87,12 @@ public class UpdateLightsOffInfos : MonoBehaviour, CarStatistics.ICompletionObse
 
 
         //slip
-        wheelsSideSlip.text = $"Wheels SideSlip (Drift): {spectatedCar.GetSideSlip():0.0}";
+        wheelsSideSlip.text = $"Wheels SideSlip (Drift): {SpectatedCar.GetSideSlip():0.0}";
         //}
     }
     public void OnNewTrackPartReached()
     {
-        var trackParts = spectatedCar.GetNextTrackShapeIds(trackPartsShown).Select<int, string>(p => p.ToString());
+        var trackParts = SpectatedCar.GetNextTrackShapeIds(trackPartsShown).Select<int, string>(p => p.ToString());
         trackPartsInfo.text = "Next TrackParts: " + string.Join(", ", trackParts) + ", ..."; //always starts on a straight line, thats why "1," is added
     }
 

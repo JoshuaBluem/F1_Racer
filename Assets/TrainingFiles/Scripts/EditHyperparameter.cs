@@ -17,7 +17,7 @@ public class EditHyperparameter : WithButtonMethod
     {
         for (int i = 1; i <= 100; i++)
         {
-            string path = target_Folder + $"\\PPO_Config{i}\\configuration.yaml";
+            string path = target_Folder + $"\\SAC_Config{i}\\configuration.yaml";
             string[] lines = File.ReadAllLines(path);
             for (int j = 0; j < lines.Length; j++)
             {

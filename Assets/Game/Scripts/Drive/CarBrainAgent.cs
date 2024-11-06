@@ -16,10 +16,20 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
 {
     [SelfFill] public BehaviorParameters behaviorParameters;
     [SerializeField, SelfFill] CarController carController;
-    [SerializeField, SelfFill] CarStatistics carStatistics;
+    [SerializeField, SelfFill] public CarStatistics carStatistics;
 
     public enum ControlMode { Human, Alg }
     public ControlMode controlMode = ControlMode.Human;
+
+    [Tooltip("The first car instantiated and the one we are spectating with the camera")]
+    public static CarBrainAgent FirstCar { get; private set; }
+
+    RecordEpisodes recorder = new(activeAtStart: false);
+    public bool Record
+    {
+        get => recorder.Active;
+        set => recorder.Active = value;
+    }
 
     #region Human Control
     //Human
@@ -49,11 +59,14 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
     {
         carController.carEventsObs.Add(this);
         carStatistics.completionObservers.Add(this);
+        FirstCar = this;
     }
     private void OnDestroy()
     {
         carController.carEventsObs.Remove(this);
         carStatistics.completionObservers.Remove(this);
+
+        recorder.EndEpisode();
     }
     private void FixedUpdate()
     {
@@ -69,25 +82,36 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
     #region ml-agents
     public new void EndEpisode()
     {
-        // Debug.Log("EndEpisode");
-        if (carStatistics.CurrentCompletion < 1) //if whole track not completed yet
+        if (carStatistics.CurrentCompletion < 1) // if whole track not completed yet
         {
-            //aktuelle Strecke noch geben
+            // give reward proportionally on current track
             AddReward(carStatistics.GetTrackPartPercent() * 10);
         }
-        else // track was completed
+        else // whole track was completed
         {
-            //zusätzliche belohnung, falls im Ziel noch zeit
+            // additional reward, if there is time remaining
             if (maxEpisodeDuration > episodeDuration)
             {
                 float usedTime_percent = episodeDuration / maxEpisodeDuration;
                 float oneTrackReward = 10 * TrackGenerator.TracksGenerated;
                 Debug.Assert(usedTime_percent > 0, "No time captured when reaching end");
-                AddReward(((1 / usedTime_percent) - 1) * oneTrackReward); //he gets the same reward for whole track again, if he drives in half time
+                // he gets the same reward for whole track again, if he drives in half time
+                AddReward(((1 / usedTime_percent) - 1) * oneTrackReward);
             }
         }
 
+        recorder.EndEpisode();
         base.EndEpisode();
+    }
+    public new void AddReward(float value)
+    {
+        recorder.AddReward(value);
+        base.AddReward(value);
+    }
+    public new void EpisodeInterrupted()
+    {
+        recorder.EpisodeInterrupted();
+        base.EpisodeInterrupted();
     }
     public override void CollectObservations(VectorSensor sensor)
     {
@@ -100,12 +124,6 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
         //6 observations
         foreach (int trackPartType in carStatistics.GetNextTrackShapeIds(6)) //list of current and coming trackPartTypes
             sensor.AddObservation(trackPartType);
-    }
-    public override void OnEpisodeBegin()
-    {
-        // Debug.Log("OnEpisodeBegin");
-        episodeDuration = 0;
-        carController.RequestStartRun();
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
@@ -123,6 +141,13 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
                 EndEpisode();
             }
         }
+    }
+    public override void OnEpisodeBegin()
+    {
+        Debug.Log("OnEpisodeBegin");
+        episodeDuration = 0;
+        carController.RequestStartRun();
+        recorder.StartEpisode();
     }
 
     public override void Heuristic(in ActionBuffers actionsOut) // called to get input if not ai in controlling

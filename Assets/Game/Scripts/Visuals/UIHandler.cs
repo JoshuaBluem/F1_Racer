@@ -2,6 +2,7 @@ using CustomInspector;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 /// <summary>
 /// Collects keyboard and mouse input, that belong to ui elements and forwards the input
@@ -16,6 +17,9 @@ public class UIHandler : MonoBehaviour
 
     [SerializeField, ForceFill] TMP_Text lightsButton;
     [SerializeField, ForceFill] TMP_Text graphicsButton;
+
+    [SerializeField, ForceFill] Image recordButtonImage;
+    [SerializeField, ForceFill] TMP_Text recordButtonText;
 
     [SerializeField, ForceFill] GameObject additionalGraphics = null;
 
@@ -77,5 +81,27 @@ public class UIHandler : MonoBehaviour
 
 
         additionalGraphics.SetActive(graphicsOn);
+    }
+    bool record = false;
+    public void ToggleRecordButton()
+    {
+        record ^= true;
+
+        if (record)
+        {
+            recordButtonImage.color = Color.grey;
+            recordButtonText.text = "Recording ...";
+        }
+        else
+        {
+            recordButtonImage.color = Color.white;
+            recordButtonText.text = "Record";
+        }
+
+        CarBrainAgent.FirstCar.Record = record;
+
+        // make a fresh recording
+        if (record)
+            ResetCarsButton();
     }
 }
