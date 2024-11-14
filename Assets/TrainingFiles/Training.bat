@@ -14,7 +14,7 @@ REM Activate the virtual environment using 'call' to keep the command prompt ope
 call .\venv\Scripts\activate
 
 REM Loop through each configuration file from 1 to 100 and run mlagents-learn
-for /l %%i in (1, 1, 100) do (
+for /l %%i in (25, 1, 100) do (
     REM echo Executing mlagents-learn with PPO_Config%%i.yaml
   	REM mlagents-learn C:\Unity\Uni\F1_Racer\Assets\TrainingFiles\Configs\Data\ppo_best%%i.yaml --env=C:\Unity\Uni\F1_Racer\Builds\F1_Racer.exe --no-graphics
  	echo Executing mlagents-learn with SAC_Config%%i.yaml
