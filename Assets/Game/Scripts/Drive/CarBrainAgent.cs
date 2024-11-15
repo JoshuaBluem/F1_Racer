@@ -94,7 +94,8 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
             {
                 float usedTime_percent = episodeDuration / maxEpisodeDuration;
                 float oneTrackReward = 10 * TrackGenerator.TracksGenerated;
-                Debug.Assert(usedTime_percent > 0, "No time captured when reaching end");
+                if (usedTime_percent < 0.1)
+					throw new Exception("No valid time captured when reaching end.\nIt's not realistic to complete the whole track in unter a second");
                 // he gets the same reward for whole track again, if he drives in half time
                 AddReward(((1 / usedTime_percent) - 1) * oneTrackReward);
             }

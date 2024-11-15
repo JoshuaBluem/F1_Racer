@@ -45,7 +45,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
     /// </summary>
     public void SetAcceleration(float vInput)
     {
-        Debug.Assert(vInput >= -1 && vInput <= 1, $"Value expected to be in range [-1, 1], but was '{vInput}'");
+        Debug.Assert(vInput >= -1.001 && vInput <= 1.001, $"Value expected to be in range [-1, 1], but was '{vInput}'");
         currentAcceleration = vInput;
 
         float motorTorque = 0;
@@ -77,7 +77,7 @@ public class CarController : MonoBehaviour, TrackGenerator.ITrackObserver
     /// </summary>
     public void SetSteering(float hInput)
     {
-        Debug.Assert(hInput >= -1 && hInput <= 1, "Steering expected to be in range [-1, 1]");
+        Debug.Assert(hInput >= -1.001 && hInput <= 1.001, $"Steering expected to be in range [-1, 1], but it was {hInput}");
 
         currentSteering = hInput;
         chassis.wheel_frontLeft.WheelCollider.steerAngle = maxSteeringAngle * currentSteering;
