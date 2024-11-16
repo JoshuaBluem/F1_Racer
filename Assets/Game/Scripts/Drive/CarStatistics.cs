@@ -66,7 +66,7 @@ public class CarStatistics : MonoBehaviour, CarController.ICarEvents
         }
     }
     /// <summary>
-    /// Relative rotation to direction of street
+    /// Relative rotation to direction of street in degrees
     /// </summary>
     /// <returns></returns>
     public float GetOnLaneRotation()

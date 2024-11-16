@@ -287,13 +287,13 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
                 float laneXPos = carStatistics.GetLaneXPos();
 
                 //calculate infos
-                float straightSteering = curveRadius == 0 ? 0 : Mathf.Asin(8 / curveRadius) / (Mathf.PI / 2f); //the steering, at what the car should stay in center of street
+                float straightSteering = curveRadius == 0 ? 0 : Mathf.Atan(4 / curveRadius) / (Mathf.PI / 4f); //the steering, at what the car should stay in center of street
                 if (curveEndAngle < 0)
                     straightSteering *= -1;
 
                 steering = Mathf.Clamp(straightSteering
-                                            + -laneXPos * 1.75f //move to middle lane
-                                            - onLaneRotation / 30f, //make car straight
+                                            + -laneXPos //move to middle lane
+                                            - onLaneRotation / 45f, //make car straight
                                             -1, 1);
             }
             else
