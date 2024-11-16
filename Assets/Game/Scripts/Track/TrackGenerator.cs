@@ -42,7 +42,6 @@ public class TrackGenerator : MonoBehaviour
     [SerializeField] TMP_Text newTrackInText;
 
     //NonSerialized
-
     public static int TracksGenerated { get; private set; } = 0;
 
     [Tooltip("The position the next track-part is generated"), ReadOnly]
@@ -56,6 +55,8 @@ public class TrackGenerator : MonoBehaviour
     public readonly List<ITrackObserver> trackObserver = new();
 
     Coroutine trackRegeneration = null;
+
+
 
 
     private void Awake()

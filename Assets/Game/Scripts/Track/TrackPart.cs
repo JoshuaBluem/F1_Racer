@@ -31,7 +31,6 @@ public class TrackPart : MonoBehaviour
     [Tooltip("The angle, at which the next trackpart docks on")]
     [SerializeField, Min2(-360), Max(360)] float endAngle = 0;
 
-
     /// <summary>
     /// The point the curve turns around
     /// </summary>
@@ -47,6 +46,7 @@ public class TrackPart : MonoBehaviour
     {
         this.TrackNumber = trackNumber;
     }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {

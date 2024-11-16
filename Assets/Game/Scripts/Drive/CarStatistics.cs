@@ -12,6 +12,7 @@ public class CarStatistics : MonoBehaviour, CarController.ICarEvents
     [SerializeField, SelfFill] Rigidbody rb;
     [SerializeField, SelfFill] CarUIUpdater uiUpdater;
     [SerializeField, ForceFill] Chassis chassis;
+    public float CarMass => rb.mass;
 
     public TrackPart CurrentTrackPart => currentTrackPart;
     [SerializeField, ReadOnly] TrackPart currentTrackPart;
@@ -33,9 +34,8 @@ public class CarStatistics : MonoBehaviour, CarController.ICarEvents
 
     #region get informations
     /// <summary>
-    /// Percentage how much the car completed the current TrackPart
+    /// Percentage how much the car completed the current TrackPart. 1 equals completed
     /// </summary>
-    /// <returns></returns>
     public float GetTrackPartPercent()
     {
         if (currentTrackPart == null)

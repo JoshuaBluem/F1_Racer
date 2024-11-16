@@ -95,9 +95,12 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
                 float usedTime_percent = episodeDuration / maxEpisodeDuration;
                 float oneTrackReward = 10 * TrackGenerator.TracksGenerated;
                 if (usedTime_percent < 0.1)
-					throw new Exception("No valid time captured when reaching end.\nIt's not realistic to complete the whole track in unter a second");
+                    throw new Exception("No valid time captured when reaching end.\nIt's not realistic to complete the whole track in unter a second");
                 // he gets the same reward for whole track again, if he drives in half time
-                AddReward(((1 / usedTime_percent) - 1) * oneTrackReward);
+                float additionalReward = ((1 / usedTime_percent) - 1) * oneTrackReward;
+                if (additionalReward > 5000)
+                    throw new Exception("How did the agent complete the whole track in less than a second?");
+                AddReward(additionalReward);
             }
         }
 
@@ -145,12 +148,11 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
     }
     public override void OnEpisodeBegin()
     {
-        Debug.Log("OnEpisodeBegin");
+        // Debug.Log("OnEpisodeBegin");
         episodeDuration = 0;
         carController.RequestStartRun();
         recorder.StartEpisode();
     }
-
     public override void Heuristic(in ActionBuffers actionsOut) // called to get input if not ai in controlling
     {
         float acceleration;
@@ -189,42 +191,88 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
         }
         else if (controlMode == ControlMode.Alg)
         {
-            //Hold speed of x kmh
+            static float TrackShapeIdToRadius(int trackShapeId)
+            {
+                return trackShapeId switch
+                {
+                    0 or 1 => 0,   // long/short straight
+                    3 or -3 => 30, // right/left 45°
+                    4 or -4 => 15, // big right/left 90°
+                    5 or -5 => 8,  // small right/left 90°
+                    _ => throw new ArgumentException("Unknown trackShapeId")
+                };
+
+            }
+            // Length of the arc in the middle of the track
+            static float CalculateTrackLength(int trackShapeId)
+            {
+                // Length when driving specific angle on a given trackPart
+                static float CalculateAngleLength(float angle, int shapeId)
+                => (angle / 360) * (2 * Mathf.PI * TrackShapeIdToRadius(shapeId));
+
+                return trackShapeId switch
+                {
+                    0 => 50,   // long straight
+                    1 => 10,   // short straight
+                    3 or -3 => CalculateAngleLength(45, trackShapeId), // 45°
+                    4 or -4 => CalculateAngleLength(90, trackShapeId), // big 90°
+                    5 or -5 => CalculateAngleLength(90, trackShapeId), // small 90°
+                    _ => throw new ArgumentException("Unknown trackShapeId")
+                };
+            }
+            // calculate maxSpeed
+            float GetMaxSpeedPossible(int shapeId) //in kmh
+            {
+                // straight track
+                if (shapeId == 0 || shapeId == 1)
+                    return float.MaxValue;
+                // curve
+                float curveRadius = TrackShapeIdToRadius(shapeId);
+                float grip = 450000;
+                return Mathf.Sqrt(grip * curveRadius / carStatistics.CarMass);
+            }
+
+            // hold speed of x kmh
             if (carStatistics.CurrentTrackPart)
             {
-                //get infos
-                IEnumerable<int> trackIds = carStatistics.GetNextTrackShapeIds(4);
+                // get current and next 5 track parts
+                IEnumerable<int> trackIds = carStatistics.GetNextTrackShapeIds(6);
                 float trackPartPercent = carStatistics.GetTrackPartPercent();
 
-                //calculate speed
-                float targetSpeed = trackIds.Select(i => GetMaxSpeedPossible(i))
-                                        .Select((speed, index) => speed + Mathf.Clamp01(index - (trackPartPercent * 1.5f - .33f)) * 50) //weight far away less
-                                        .Min(); //take min speed
+                List<(float maxSpeed, float length)> trackInfos
+                              = trackIds.Select(id => (GetMaxSpeedPossible(id), CalculateTrackLength(id)))
+                                        .ToList();
 
-                static float GetMaxSpeedPossible(int trackShapeId) //in kmh
+                // calculate distances to each trackparts
+                List<float> distances = new() { 0 };
+                for (int i = 0; i < trackInfos.Count - 1; i++)
                 {
-                    return trackShapeId switch
-                    {
-                        0 => float.MaxValue, //long straight
-                        1 => float.MaxValue, //short straight
-                        -3 => 130, //left 45°
-                        3 => 130, //right 45°
-                        -4 => 90, //big left 90°
-                        4 => 90, //big right 90°
-                        -5 => 65, //small left 90°
-                        5 => 65, //small right 90°
-                        _ => throw new ArgumentException($"Unknown {nameof(trackShapeId)}: {trackShapeId}")
-                    };
+                    if (i == 0) // first trackPart is already partially completed
+                        distances.Add(trackInfos[0].length * (1 - trackPartPercent));
+                    else
+                        distances.Add(distances[^1] + trackInfos[i].length);
                 }
 
-                //Apply speed
+                // add braking distance
+                List<float> safeSpeeds = new();
+                for (int i = 0; i < trackInfos.Count; i++)
+                {
+                    float brakingStrength = 400;
+                    safeSpeeds.Add(Mathf.Sqrt(trackInfos[i].maxSpeed * trackInfos[i].maxSpeed + 2 * brakingStrength * distances[i]));
+                }
+
+
+                // get targetspeed
+                float targetSpeed = safeSpeeds.Min();
+
+                // apply speed
                 float curr_kmh = carStatistics.CurrentSpeed * 3.6f;
-                float accelerationUC = (targetSpeed - curr_kmh) / 5;
-                acceleration = (Mathf.Clamp(accelerationUC, -1, 1));
+                float accelerationUC = (targetSpeed - curr_kmh) / 5; // so he does only brakes/accelerates only fully when more than xkmh difference
+                acceleration = Mathf.Clamp(accelerationUC, -1, 1);
             }
             else
             {
-                //drive until a trackpart is found
+                // drive until a trackpart is found
                 acceleration = (1);
             }
 
@@ -239,7 +287,7 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
                 float laneXPos = carStatistics.GetLaneXPos();
 
                 //calculate infos
-                float straightSteering = curveRadius == 0 ? 0 : Mathf.Atan(8 / curveRadius) / (Mathf.PI / 2f); //the steering, at what the car should stay in center of street
+                float straightSteering = curveRadius == 0 ? 0 : Mathf.Asin(8 / curveRadius) / (Mathf.PI / 2f); //the steering, at what the car should stay in center of street
                 if (curveEndAngle < 0)
                     straightSteering *= -1;
 
