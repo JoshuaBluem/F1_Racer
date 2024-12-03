@@ -228,7 +228,7 @@ public class CarBrainAgent : Agent, CarController.ICarEvents, CarStatistics.ICom
                     return float.MaxValue;
                 // curve
                 float curveRadius = TrackShapeIdToRadius(shapeId);
-                float grip = 450000;
+                float grip = 440000;
                 return Mathf.Sqrt(grip * curveRadius / carStatistics.CarMass);
             }
 
